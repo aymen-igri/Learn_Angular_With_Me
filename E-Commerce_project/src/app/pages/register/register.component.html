@@ -1,0 +1,44 @@
+<section>
+  <div class="container">
+    <h1>Register form</h1>
+    <form [formGroup]="registrationForm"> <!-- You should use this syntaxe instead of <form formGroupName="registrationForm"> -->
+      <!-- Username -->
+      <div class="fileds">
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-user"></i>
+          </p-inputGroupAddon>
+          <input pInputText placeholder="Username" formControlName="name"/>
+        </p-inputGroup>
+      </div>
+      <!-- Email -->
+      <div class="fileds">
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-at"></i>
+          </p-inputGroupAddon>
+          <input pInputText placeholder="Email" formControlName="email"/>
+        </p-inputGroup>
+      </div>
+      <!-- Password -->
+      <div class="fileds">
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-lock"></i>
+          </p-inputGroupAddon>
+          <input pInputText placeholder="Password" formControlName="password"/>
+        </p-inputGroup>
+      </div>
+      <!-- Confirm Password -->
+      <div class="fileds">
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-lock"></i>
+          </p-inputGroupAddon>
+          <input pInputText placeholder="Confirm Password" formControlName="confirmPassword"/>
+        </p-inputGroup>
+      </div>
+      <p-button label="Submit" type="submit"/>
+    </form>
+  </div>
+</section>
