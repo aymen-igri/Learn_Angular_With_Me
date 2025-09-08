@@ -1,15 +1,47 @@
 <section>
   <div class="container">
     <h1>Register form</h1>
-    <form [formGroup]="registrationForm"> <!-- You should use this syntaxe instead of <form formGroupName="registrationForm"> -->
+    <form [formGroup]="registrationForm" (ngSubmit)="submit()">
+      <!-- You should use this syntaxe instead of <form formGroupName="registrationForm"> -->
       <!-- Username -->
       <div class="fileds">
         <p-inputGroup>
           <p-inputGroupAddon>
             <i class="pi pi-user"></i>
           </p-inputGroupAddon>
-          <input pInputText placeholder="Username" formControlName="name"/>
+          <input pInputText placeholder="Username" formControlName="name" />
         </p-inputGroup>
+      </div>
+      <div class="Validation">
+        @if (name.dirty || name.touched) { @if (name.getError("required")) {
+        <p-messages
+          [value]="[{ severity: 'error', detail: 'You must enter you name' }]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } @if (name.getError("minlength")) {
+        <p-messages
+          [value]="[
+            {
+              severity: 'error',
+              detail: 'You name must have at least 3 caracters'
+            }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } @if (name.getError("maxlength")) {
+        <p-messages
+          [value]="[
+            {
+              severity: 'error',
+              detail: 'You name must have at most 20 caracters'
+            }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } }
       </div>
       <!-- Email -->
       <div class="fileds">
@@ -17,8 +49,28 @@
           <p-inputGroupAddon>
             <i class="pi pi-at"></i>
           </p-inputGroupAddon>
-          <input pInputText placeholder="Email" formControlName="email"/>
+          <input pInputText placeholder="Email" formControlName="email" />
         </p-inputGroup>
+      </div>
+      <div class="Validation">
+        @if (email.dirty || email.touched) { @if (email.getError("required")) {
+        <p-messages
+          [value]="[{ severity: 'error', detail: 'You must enter your email' }]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } @if (email.getError("email")) {
+        <p-messages
+          [value]="[
+            {
+              severity: 'error',
+              detail: 'You must enter a valid email address with @example.com'
+            }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } }
       </div>
       <!-- Password -->
       <div class="fileds">
@@ -26,8 +78,25 @@
           <p-inputGroupAddon>
             <i class="pi pi-lock"></i>
           </p-inputGroupAddon>
-          <input pInputText placeholder="Password" formControlName="password"/>
+          <input
+            type="password"
+            pInputText
+            placeholder="Password"
+            formControlName="password"
+          />
         </p-inputGroup>
+      </div>
+      <div class="Validation">
+        @if (password.dirty || password.touched) { @if
+        (password.getError("required")) {
+        <p-messages
+          [value]="[
+            { severity: 'error', detail: 'You must enter your password' }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } }
       </div>
       <!-- Confirm Password -->
       <div class="fileds">
@@ -35,10 +104,33 @@
           <p-inputGroupAddon>
             <i class="pi pi-lock"></i>
           </p-inputGroupAddon>
-          <input pInputText placeholder="Confirm Password" formControlName="confirmPassword"/>
+          <input
+            type="password"
+            pInputText
+            placeholder="Confirm Password"
+            formControlName="confirmPassword"
+          />
         </p-inputGroup>
       </div>
-      <p-button label="Submit" type="submit"/>
+      <div class="Validation">
+        @if (confirmPassword.dirty || confirmPassword.touched) { @if
+        (confirmPassword.getError("required")) {
+        <p-messages
+          [value]="[
+            { severity: 'error', detail: 'You must re-enter your password' }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } @if (confirmPassword.getError("noMatch")) {
+        <p-messages
+          [value]="[{ severity: 'error', detail: 'Passwords do not match' }]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } }
+      </div>
+      <p-button class="fileds" label="Submit" type="submit" />
     </form>
   </div>
 </section>
