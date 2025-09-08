@@ -9,17 +9,18 @@
           <p-inputGroupAddon>
             <i class="pi pi-user"></i>
           </p-inputGroupAddon>
-          <input pInputText placeholder="Username" formControlName="name" />
+          <input pInputText placeholder="Username" formControlName="username" />
         </p-inputGroup>
       </div>
       <div class="Validation">
-        @if (name.dirty || name.touched) { @if (name.getError("required")) {
+        @if (username.dirty || username.touched) { @if
+        (username.getError("required")) {
         <p-messages
           [value]="[{ severity: 'error', detail: 'You must enter you name' }]"
           [enableService]="false"
           [closable]="false"
         />
-        } @if (name.getError("minlength")) {
+        } @if (username.getError("minlength")) {
         <p-messages
           [value]="[
             {
@@ -30,7 +31,7 @@
           [enableService]="false"
           [closable]="false"
         />
-        } @if (name.getError("maxlength")) {
+        } @if (username.getError("maxlength")) {
         <p-messages
           [value]="[
             {
@@ -131,6 +132,7 @@
         } }
       </div>
       <p-button class="fileds" label="Submit" type="submit" />
+      <p-toast />
     </form>
   </div>
 </section>

@@ -12,7 +12,12 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
-import { AuthService } from '../../core/auth.service';
+import { AuthService } from '../../core/services/auth.service';
+import { IRegister } from '../../core/interfaces/iregister';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { IRegisterStatus } from '../../core/interfaces/iregister-status';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-register',
@@ -24,24 +29,30 @@ import { AuthService } from '../../core/auth.service';
     ReactiveFormsModule,
     ButtonModule,
     MessagesModule,
+    ToastModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
+  providers: [MessageService],
 })
 export class RegisterComponent {
-  name!: FormControl;
+  username!: FormControl;
   email!: FormControl;
   password!: FormControl;
   confirmPassword!: FormControl;
   registrationForm!: FormGroup;
 
-  constructor(private _authService: AuthService) {
+  constructor(
+    private _authService: AuthService,
+    private messageService: MessageService,
+    private router: Router
+  ) {
     this.initFormControls();
     this.initFormGroup();
   }
 
   initFormControls(): void {
-    this.name = new FormControl('', [
+    this.username = new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(20),
@@ -56,7 +67,7 @@ export class RegisterComponent {
 
   initFormGroup(): void {
     this.registrationForm = new FormGroup({
-      name: this.name,
+      username: this.username,
       email: this.email,
       password: this.password,
       confirmPassword: this.confirmPassword,
@@ -74,27 +85,39 @@ export class RegisterComponent {
     };
   }
 
+  register(submitedData: IRegister): void {
+    this._authService.doCreate(submitedData).subscribe({
+      next: (r) => {
+        if(r.id){
+          this.showNotif({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Registration successful!',
+          });
+        }
+      },
+      error: (e) => {
+        this.showNotif({
+          severity: 'error',
+          summary: 'Error',
+          detail: e.error.error,
+        });
+      },
+      complete: () => {
+        this.router.navigate(['login'])
+      },
+    });
+  }
+
+  showNotif(status: IRegisterStatus): void {
+    this.messageService.add(status);
+  }
+
   submit(): void {
     if (this.registrationForm.valid) {
       console.log('Form Submitted!', this.registrationForm.value);
-      this._authService
-        .doCreate({
-          id: 0,
-          username: this.registrationForm.value.name,
-          email: this.registrationForm.value.email,
-          password: this.registrationForm.value.password,
-        })
-        .subscribe({
-          next: (r) => {
-            console.log('succes , ', r);
-          },
-          error: (e) => {
-            console.log('faild, error: ', e);
-          },
-          complete: () => {
-            console.log('mission completed');
-          },
-        });
+      this.register(this.registrationForm.value);
+      
     } else {
       console.log('Form not valid');
       this.registrationForm.markAllAsTouched();

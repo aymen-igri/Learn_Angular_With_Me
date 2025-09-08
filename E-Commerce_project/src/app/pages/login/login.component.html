@@ -1,1 +1,77 @@
-<p>login works!</p>
+<section>
+  <div class="container">
+    <h1>Login form</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+      <!-- You should use this syntaxe instead of <form formGroupName="registrationForm"> -->
+      <!-- Username -->
+      <div class="fileds">
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-user"></i>
+          </p-inputGroupAddon>
+          <input pInputText placeholder="Username" formControlName="username" />
+        </p-inputGroup>
+      </div>
+      <div class="Validation">
+        @if (username.dirty || username.touched) { @if
+        (username.getError("required")) {
+        <p-messages
+          [value]="[{ severity: 'error', detail: 'You must enter you name' }]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } @if (username.getError("minlength")) {
+        <p-messages
+          [value]="[
+            {
+              severity: 'error',
+              detail: 'You name must have at least 3 caracters'
+            }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } @if (username.getError("maxlength")) {
+        <p-messages
+          [value]="[
+            {
+              severity: 'error',
+              detail: 'You name must have at most 20 caracters'
+            }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } }
+      </div>
+      <!-- Password -->
+      <div class="fileds">
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-lock"></i>
+          </p-inputGroupAddon>
+          <input
+            type="password"
+            pInputText
+            placeholder="Password"
+            formControlName="password"
+          />
+        </p-inputGroup>
+      </div>
+      <div class="Validation">
+        @if (password.dirty || password.touched) { @if
+        (password.getError("required")) {
+        <p-messages
+          [value]="[
+            { severity: 'error', detail: 'You must enter your password' }
+          ]"
+          [enableService]="false"
+          [closable]="false"
+        />
+        } }
+      </div>
+      <p-button class="fileds" label="Submit" type="submit" />
+      <p-toast />
+    </form>
+  </div>
+</section>
