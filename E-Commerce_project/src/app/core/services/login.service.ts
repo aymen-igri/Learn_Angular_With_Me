@@ -11,7 +11,7 @@ export class LoginService {
 
   constructor(private _httpclient:HttpClient) {}
 
-  doGet(userData: ILogin): Observable <any>{
+  doLog(userData: ILogin): Observable <any>{
     return this._httpclient.post(`${apiRoute}/auth/login`,userData)
   }
 }

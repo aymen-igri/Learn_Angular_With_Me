@@ -1,39 +1,18 @@
 import { Component } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { MessagesModule } from 'primeng/messages';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../core/services/login.service';
 import { ILogin } from '../../core/interfaces/ilogin';
-import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { IRegisterStatus } from '../../core/interfaces/iregister-status';
 import { Router } from '@angular/router';
+import { SharedModule } from '../../shared/modules/shared.module';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    InputGroupModule,
-    InputGroupAddonModule,
-    InputTextModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    MessagesModule,
-    ToastModule,
-  ],
+  imports: [SharedModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [MessageService],
 })
 export class LoginComponent {
   username!: FormControl;
@@ -65,19 +44,8 @@ export class LoginComponent {
     });
   }
 
-  passwordMatchValidation(pass: AbstractControl): ValidatorFn {
-    return (rePass: AbstractControl): null | { [key: string]: boolean } => {
-      if (pass.value !== rePass.value) {
-        console.log('No Match');
-        return { noMatch: true };
-      } else {
-        return null;
-      }
-    };
-  }
-
   login(submitedData: ILogin): void {
-    this._loginService.doGet(submitedData).subscribe({
+    this._loginService.doLog(submitedData).subscribe({
       next: (r) => {
         if (r.token) {
           console.log(r);
@@ -86,17 +54,17 @@ export class LoginComponent {
             summary: 'Success',
             detail: 'Login successful!',
           });
+          localStorage.setItem('userToken', r.token);
+          this.router.navigateByUrl('/user');
         }
       },
       error: (e) => {
+        console.log(e);
         this.showNotif({
           severity: 'error',
           summary: 'Error',
-          detail: e.error.error,
+          detail: e.error,
         });
-      },
-      complete: () => {
-        this.router.navigateByUrl('/user');
       },
     });
   }

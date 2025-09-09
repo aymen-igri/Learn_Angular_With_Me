@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+import { registerGuard } from './core/guards/register.guard';
 
 export const routes: Routes = [
   {
@@ -29,6 +31,7 @@ export const routes: Routes = [
           import('./pages/register/register.component').then(
             (m) => m.RegisterComponent
           ),
+        canDeactivate: [registerGuard],
       },
     ],
   },
@@ -38,5 +41,6 @@ export const routes: Routes = [
       import('./layouts/user-layout/user-layout.component').then(
         (c) => c.UserLayoutComponent
       ),
+    canActivate: [authGuard]
   },
 ];

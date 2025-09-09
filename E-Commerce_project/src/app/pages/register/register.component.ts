@@ -3,37 +3,22 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
-  ReactiveFormsModule,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { MessagesModule } from 'primeng/messages';
 import { AuthService } from '../../core/services/auth.service';
 import { IRegister } from '../../core/interfaces/iregister';
-import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { IRegisterStatus } from '../../core/interfaces/iregister-status';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+import { SharedModule } from '../../shared/modules/shared.module';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [
-    InputGroupModule,
-    InputGroupAddonModule,
-    InputTextModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    MessagesModule,
-    ToastModule,
-  ],
+  imports: [SharedModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
-  providers: [MessageService],
 })
 export class RegisterComponent {
   username!: FormControl;
@@ -88,12 +73,13 @@ export class RegisterComponent {
   register(submitedData: IRegister): void {
     this._authService.doCreate(submitedData).subscribe({
       next: (r) => {
-        if(r.id){
+        if (r.id) {
           this.showNotif({
             severity: 'success',
             summary: 'Success',
             detail: 'Registration successful!',
           });
+          this.router.navigate(['login']);
         }
       },
       error: (e) => {
@@ -102,9 +88,6 @@ export class RegisterComponent {
           summary: 'Error',
           detail: e.error.error,
         });
-      },
-      complete: () => {
-        this.router.navigate(['login'])
       },
     });
   }
@@ -117,7 +100,6 @@ export class RegisterComponent {
     if (this.registrationForm.valid) {
       console.log('Form Submitted!', this.registrationForm.value);
       this.register(this.registrationForm.value);
-      
     } else {
       console.log('Form not valid');
       this.registrationForm.markAllAsTouched();
