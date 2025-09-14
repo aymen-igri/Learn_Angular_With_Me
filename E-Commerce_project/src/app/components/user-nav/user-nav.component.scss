@@ -1,0 +1,15 @@
+.p-badge {
+  background-color: yellow;
+  color: black;
+}
+.logout {
+  background-color: red !important;
+  color: white !important;
+  font-size: 20px !important;
+  position: absolute;
+  right: 80px;
+  top: 80px;  
+  transform: translate(0, 100%);
+  z-index: 1000;
+  white-space: nowrap;
+}

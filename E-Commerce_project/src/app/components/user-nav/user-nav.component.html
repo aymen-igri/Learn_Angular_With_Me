@@ -1,1 +1,32 @@
-<p>user-nav works!</p>
+<div class="card">
+  <p-menubar [model]="items">
+    <ng-template pTemplate="start">
+      <figure class="mx-2 my-0">
+        <img class="w-2rem" src="../../../assets/logo.svg" alt="logo" />
+      </figure>
+    </ng-template>
+    <ng-template pTemplate="item" let-item let-root="root">
+      <a
+        pRipple
+        class="flex align-items-center p-menuitem-link"
+        [routerLink]="[item?.['path']]"
+      >
+        <span [class]="item.icon"></span>
+        <span class="ml-2">{{ item.label }}</span>
+      </a>
+    </ng-template>
+    <ng-template pTemplate="end">
+      <div class="card flex justify-content-center mr-2">
+        <a>
+          <i class="pi pi-shopping-cart text-3xl" pBadge value="2"></i>
+        </a>
+        <a class="userIcone mx-3 my-0" (click)="logOut = !logOut">
+          <span class="pi pi-user" style="font-size: 1.5rem"></span>
+        </a>
+      </div>
+    </ng-template>
+  </p-menubar>
+  @if (logOut) {
+    <a class="logout font-bold absolute right-0 p-2 bg-yellow-500" (click)="logout()">Logout</a>
+  }  
+</div>

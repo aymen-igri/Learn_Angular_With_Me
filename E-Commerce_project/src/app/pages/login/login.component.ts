@@ -6,6 +6,8 @@ import { MessageService } from 'primeng/api';
 import { IRegisterStatus } from '../../core/interfaces/iregister-status';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../shared/modules/shared.module';
+import { mainUser } from '../../shared/mainUser/mainUser';
+import { UserDataService } from '../../core/services/user-data.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +23,7 @@ export class LoginComponent {
 
   constructor(
     private _loginService: LoginService,
+    private _userDataService: UserDataService,
     private messageService: MessageService,
     private router: Router
   ) {
@@ -43,7 +46,7 @@ export class LoginComponent {
       password: this.password,
     });
   }
-
+  
   login(submitedData: ILogin): void {
     this._loginService.doLog(submitedData).subscribe({
       next: (r) => {
@@ -55,7 +58,15 @@ export class LoginComponent {
             detail: 'Login successful!',
           });
           localStorage.setItem('userToken', r.token);
-          this.router.navigateByUrl('/user');
+          this._userDataService.doGetUser(r.token).subscribe({
+            next: (res) => {
+              console.log(res);
+            },
+            error: (err) => {
+              console.log(err);
+            }
+          })
+          this.router.navigateByUrl('/home');
         }
       },
       error: (e) => {

@@ -1,1 +1,38 @@
-<p>home works!</p>
+<section>
+  <div class="container">
+    <!-- Fixed: Added closing quote -->
+    <h5 class="font-bold text-color-secondary uppercase">
+      <!-- Fixed: text-colot -> text-color -->
+      Hot sale
+    </h5>
+    <div class="grid">
+      <div class="col-12 md:col-5">
+        <!-- Fixed: Added closing quote -->
+        <div class="card">
+          <p-galleria
+            [value]="images"
+            [circular]="true"
+            [showItemNavigators]="true"
+            [showThumbnails]="false"
+            [containerStyle]="{ 'max-width': '100%' }"
+          >
+            <ng-template pTemplate="item" let-item>
+              <img
+                [src]="item.itemImageSrc"
+                style="width: 100%; display: block"
+              />
+            </ng-template>
+          </p-galleria>
+        </div>
+      </div>
+      <div class="hidden md:block md:col-6">
+        <div class="flex justify-content-between align-item-center flex-wrap">
+          <app-card [isSmallCard]="true" [products]="bestProducts" />
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-content-between align-item-center flex-wrap">
+      <app-card [isSmallCard]="false" [products]="products" />
+    </div>
+  </div>
+</section>

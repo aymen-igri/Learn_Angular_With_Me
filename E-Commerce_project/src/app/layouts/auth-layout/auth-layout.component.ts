@@ -11,5 +11,4 @@ import { RouterOutlet } from "@angular/router";
   styleUrl: './auth-layout.component.scss'
 })
 export class AuthLayoutComponent {
-
 }
